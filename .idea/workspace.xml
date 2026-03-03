@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a77b3e2e-1629-4619-a83a-9cc413501935" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kroitales-unit2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/.idea/kroitales-unit2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HELP.md" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/HELP.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/react-front-end-app/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/react-front-end-app/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/KroitalesApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/KroitalesApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/controllers/ActionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/controllers/ActionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/controllers/SettingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/controllers/SettingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/controllers/SidekickController.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/controllers/SidekickController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/controllers/StoryCharacterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/controllers/StoryCharacterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/controllers/StoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/controllers/StoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/data/ActionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/data/ActionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/data/SettingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/data/SettingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/data/SidekickRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/data/SidekickRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/data/StoryCharacterRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/data/StoryCharacterRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/data/StoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/data/StoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/dto/StoryCreateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/dto/StoryCreateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/models/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/models/Action.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/models/Setting.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/models/Setting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/models/Sidekick.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/models/Sidekick.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/models/Story.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/models/Story.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kroitales/kroitales/models/StoryCharacter.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/java/com/kroitales/kroitales/models/StoryCharacter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/kroitales/kroitales/KroitalesApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/src/test/java/com/kroitales/kroitales/KroitalesApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/java-spring-boot-back-end-app/target/classes/application.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;arnelafurriku&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/arnelafurriku/kroitales-unit2&quot;,
+    &quot;accountId&quot;: &quot;85397d7d-5d0e-46e7-9ab6-1ce7778c9717&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="3ABQ3oNHDiaOsZYiTWnAQf5SysA" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Application.KroitalesApplication.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.KroitalesApplication.executor": "Run",
+    "git-widget-placeholder": "feature/fullstack-integration",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/java-spring-boot-back-end-app" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="KroitalesApplication" type="Application" factoryName="Application">
+      <envs>
+        <env name="DB_PASSWORD" value="kroipass" />
+        <env name="DB_USER" value="kroiuser" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="com.kroitales.kroitales.KroitalesApplication" />
+      <module name="kroitales" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="kroitales-unit2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="kroitales-unit2" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-cffe25b9f5b3-intellij.indexing.shared.core-IU-253.28294.334" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a77b3e2e-1629-4619-a83a-9cc413501935" name="Changes" comment="" />
+      <created>1772063286905</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1772063286905</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
