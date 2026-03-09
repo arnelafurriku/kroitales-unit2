@@ -1,10 +1,4 @@
-function Library({
-  stories,
-  selectedIds,
-  onToggleSelect,
-  onDeleteSelected,
-  onLoadStory,
-}) {
+function Library({ stories, onViewStory, onEditStory, onDeleteStory }) {
   const hasStories = stories && stories.length > 0;
 
   return (
@@ -13,50 +7,58 @@ function Library({
         Saved Stories
       </h3>
 
-      <div className="saved-actions">
-        <button
-          className="btn delete"
-          type="button"
-          onClick={onDeleteSelected}
-        >
-          Delete
-        </button>
-      </div>
+      <div className="stories-table">
+        <div className="stories-table__header">
+          <div>Title</div>
+          <div>Created</div>
+          <div>Actions</div>
+        </div>
 
-      <ul className="list list--stories">
         {hasStories ? (
           stories.map((story) => (
-            <li key={story.id} className="list-item">
-              <div className="story-item">
-                <input
-                  type="checkbox"
-                  checked={selectedIds.includes(story.id)}
-                  onChange={() => onToggleSelect(story.id)}
-                />
-                <div className="story-item__content">
-                  <h4>{story.title}</h4>
-                  <p>{story.text}</p>
-                  <button
-                    type="button"
-                    className="btn"
-                    style={{ marginTop: "6px" }}
-                    onClick={() => onLoadStory(story.id)}
-                  >
-                    Load in preview
-                  </button>
-                </div>
+            <div key={story.id} className="stories-table__row">
+              <div className="stories-table__title">
+                {story.title || "Untitled story"}
               </div>
-            </li>
+
+              <div className="stories-table__date">
+                {story.createdAt || "—"}
+              </div>
+
+              <div className="stories-table__actions">
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => onViewStory(story.id)}
+                >
+                  View
+                </button>
+
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => onEditStory(story.id)}
+                >
+                  Edit
+                </button>
+
+                <button
+                  type="button"
+                  className="btn delete"
+                  onClick={() => onDeleteStory(story.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
           ))
         ) : (
-          <li className="list-item">
-            <p style={{ margin: 0 }}>
-              No stories saved yet. Generate a story and click Save to add it
-              here.
-            </p>
-          </li>
+          <div className="stories-table__empty">
+            No stories saved yet. Generate a story and click Save to add it
+            here.
+          </div>
         )}
-      </ul>
+      </div>
     </div>
   );
 }
