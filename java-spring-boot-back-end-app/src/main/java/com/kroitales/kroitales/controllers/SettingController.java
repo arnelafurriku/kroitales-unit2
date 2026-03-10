@@ -1,7 +1,7 @@
 package com.kroitales.kroitales.controllers;
 
-import com.kroitales.kroitales.data.SettingRepository;
 import com.kroitales.kroitales.models.Setting;
+import com.kroitales.kroitales.services.SettingService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,26 +13,38 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class SettingController {
 
-    private final SettingRepository repository;
+    private final SettingService settingService;
 
-    public SettingController(SettingRepository repository) {
-        this.repository = repository;
+    public SettingController(SettingService settingService) {
+        this.settingService = settingService;
     }
 
     @GetMapping
-    public List<Setting> getAll() {
-        return repository.findAll();
+    public List<Setting> getAllSettings() {
+        return settingService.getAllSettings();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Setting> getById(@PathVariable Long id) {
-        return repository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Setting> getSettingById(@PathVariable Long id) {
+        return ResponseEntity.ok(settingService.getSettingById(id));
     }
 
     @PostMapping
-    public Setting create(@RequestBody @Valid Setting setting) {
-        return repository.save(setting);
+    public ResponseEntity<Setting> createSetting(@RequestBody @Valid Setting setting) {
+        return ResponseEntity.ok(settingService.createSetting(setting));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Setting> updateSetting(
+            @PathVariable Long id,
+            @RequestBody @Valid Setting updatedSetting
+    ) {
+        return ResponseEntity.ok(settingService.updateSetting(id, updatedSetting));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSetting(@PathVariable Long id) {
+        settingService.deleteSetting(id);
+        return ResponseEntity.noContent().build();
     }
 }

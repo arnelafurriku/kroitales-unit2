@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 import Builder from "../components/Builder.jsx";
 import Library from "../components/Library.jsx";
-import { createCharacter } from "../api/charactersApi";
-import { createSidekick } from "../api/sidekicksApi";
-import { createSetting } from "../api/settingsApi";
-import { createAction } from "../api/actionsApi";
-import { createStory } from "../api/storiesApi";
+import { createCharacter, updateCharacter } from "../api/charactersApi";
+import { createSidekick, updateSidekick } from "../api/sidekicksApi";
+import { createSetting, updateSetting } from "../api/settingsApi";
+import { createAction, updateAction } from "../api/actionsApi";
+import {
+  createStory,
+  getAllStories,
+  updateStory,
+  deleteStory,
+} from "../api/storiesApi";
 
 const INITIAL_BUILDER_STATE = {
   character: "",
@@ -141,39 +146,54 @@ function buildStory({ character, sidekick, setting, action, notes }) {
   return storyParts.join("\n\n");
 }
 
+function mapStoryFromApi(story) {
+  return {
+    id: story.id,
+    title: story.title || "Untitled story",
+    text: story.content || "",
+    notes: story.notesTags || "",
+    character: story.character?.name || "",
+    sidekick: story.sidekick?.name || "",
+    setting: story.setting?.name || "",
+    action: story.action?.name || "",
+    characterId: story.character?.id || null,
+    sidekickId: story.sidekick?.id || null,
+    settingId: story.setting?.id || null,
+    actionId: story.action?.id || null,
+    createdAt: story.createdAt || "",
+  };
+}
+
 function Home() {
   const [builderState, setBuilderState] = useState(INITIAL_BUILDER_STATE);
   const [storyText, setStoryText] = useState("");
   const [savedStories, setSavedStories] = useState([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [editingStoryId, setEditingStoryId] = useState(null);
+  const [editingStory, setEditingStory] = useState(null);
 
   useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem("kroiTalesStories");
-      if (stored) {
-        setSavedStories(JSON.parse(stored));
-      }
-    } catch (e) {
-      console.error("Failed to load saved stories:", e);
-    }
+    loadStories();
   }, []);
 
-  useEffect(() => {
+  async function loadStories() {
     try {
-      window.localStorage.setItem(
-        "kroiTalesStories",
-        JSON.stringify(savedStories)
-      );
-    } catch (e) {
-      console.error("Failed to persist stories:", e);
+      const stories = await getAllStories();
+      setSavedStories(stories.map(mapStoryFromApi));
+    } catch (error) {
+      console.error("Failed to load stories:", error);
     }
-  }, [savedStories]);
+  }
 
   function handleFieldChange(field, value) {
     setBuilderState((prev) => ({
       ...prev,
       [field]: value,
     }));
+  }
+
+  function handleStoryTextChange(value) {
+    setStoryText(value);
   }
 
   function handleGenerateStory() {
@@ -198,91 +218,82 @@ function Home() {
   }
 
   async function handleSaveStory() {
-    try {
-      const characterName = builderState.character.trim();
-      const sidekickName = builderState.sidekick.trim();
-      const settingName = builderState.setting.trim();
-      const actionName = builderState.action.trim();
-      const notesTags = builderState.notes.trim();
-      const storyTitle = builderState.title.trim() || "Untitled story";
+  try {
+    const characterName = builderState.character.trim();
+    const sidekickName = builderState.sidekick.trim();
+    const settingName = builderState.setting.trim();
+    const actionName = builderState.action.trim();
+    const notesTags = builderState.notes.trim();
+    const storyTitle = builderState.title.trim() || "Untitled story";
 
-      if (!characterName || !sidekickName || !settingName || !actionName) {
-        alert(
-          "Please enter a character, sidekick, setting, and action before saving."
-        );
+    if (!characterName || !sidekickName || !settingName || !actionName) {
+      alert(
+        "Please enter a character, sidekick, setting, and action before saving."
+      );
+      return;
+    }
+
+    let text = storyText.trim();
+
+    if (!text) {
+      const generated = buildStory(builderState);
+
+      if (!generated) {
+        alert("Please generate a story before saving.");
         return;
       }
 
-      let text = storyText.trim();
-
-      if (!text) {
-        const generated = buildStory(builderState);
-
-        if (!generated) {
-          alert("Please generate a story before saving.");
-          return;
-        }
-
-        text = generated;
-        setStoryText(generated);
-      }
-
-      const savedCharacter = await createCharacter({
-        name: characterName,
-      });
-
-      const savedSidekick = await createSidekick({
-        name: sidekickName,
-      });
-
-      const savedSetting = await createSetting({
-        name: settingName,
-      });
-
-      const savedAction = await createAction({
-        name: actionName,
-      });
-
-      const savedStory = await createStory({
-        title: storyTitle,
-        content: text,
-        notesTags,
-        characterId: savedCharacter.id,
-        sidekickId: savedSidekick.id,
-        settingId: savedSetting.id,
-        actionId: savedAction.id,
-      });
-
-      setSavedStories((prev) => [
-        {
-          id: savedStory.id.toString(),
-          title: savedStory.title,
-          text: savedStory.content,
-          notes: savedStory.notesTags || "",
-          character: characterName,
-          sidekick: sidekickName,
-          setting: settingName,
-          action: actionName,
-          createdAt: new Date().toLocaleDateString(),
-        },
-        ...prev,
-      ]);
-
-      setBuilderState({ ...INITIAL_BUILDER_STATE });
-      setStoryText("");
-
-      alert("Story saved successfully!");
-    } catch (error) {
-      console.error("Failed to save story:", error);
-      alert("Something went wrong while saving the story.");
+      text = generated;
+      setStoryText(generated);
     }
-  }
 
-  function handleLoadStory(id) {
+    if (editingStoryId && editingStory) {
+  console.log("UPDATING character:", editingStory.characterId, characterName);
+  console.log("UPDATING sidekick:", editingStory.sidekickId, sidekickName);
+  console.log("UPDATING setting:", editingStory.settingId, settingName);
+  console.log("UPDATING action:", editingStory.actionId, actionName);
+
+  await updateCharacter(editingStory.characterId, { name: characterName });
+  await updateSidekick(editingStory.sidekickId, { name: sidekickName });
+  await updateSetting(editingStory.settingId, { name: settingName });
+  await updateAction(editingStory.actionId, { name: actionName });
+
+  const storyPayload = {
+    title: storyTitle,
+    content: text,
+    notesTags,
+    characterId: editingStory.characterId,
+    sidekickId: editingStory.sidekickId,
+    settingId: editingStory.settingId,
+    actionId: editingStory.actionId,
+  };
+
+  const updatedStory = await updateStory(editingStoryId, storyPayload);
+
+  setSavedStories((prev) =>
+    prev.map((story) =>
+      story.id === editingStoryId ? mapStoryFromApi(updatedStory) : story
+    )
+  );
+
+  alert("Story updated successfully!");
+}
+
+    setEditingStoryId(null);
+    setEditingStory(null);
+    setBuilderState(INITIAL_BUILDER_STATE);
+    setStoryText("");
+  } catch (error) {
+    console.error("Failed to save story:", error);
+    alert(`Something went wrong while saving the story: ${error.message}`);
+  }
+}
+
+  function handleViewStory(id) {
     const story = savedStories.find((s) => s.id === id);
     if (!story) return;
 
-    setStoryText(story.text || "");
+    setStoryText(story.text);
     setBuilderState({
       character: story.character || "",
       sidekick: story.sidekick || "",
@@ -293,25 +304,40 @@ function Home() {
     });
   }
 
-  function handleEditStory(id) {
-    const story = savedStories.find((s) => s.id === id);
-    if (!story) return;
+  function handleEditStory(story) {
+  setBuilderState({
+    character: story.character || "",
+    sidekick: story.sidekick || "",
+    setting: story.setting || "",
+    action: story.action || "",
+    notes: story.notes || "",
+    title: story.title || "",
+  });
 
-    setBuilderState({
-      character: story.character || "",
-      sidekick: story.sidekick || "",
-      setting: story.setting || "",
-      action: story.action || "",
-      notes: story.notes || "",
-      title: story.title || "",
-    });
+  setStoryText(story.text || "");
+  setEditingStoryId(story.id);
+  setEditingStory(story);
+}
 
-    setStoryText(story.text || "");
-  }
+  async function handleDeleteStory(id) {
+  try {
+    await deleteStory(id);
 
-  function handleDeleteStory(id) {
     setSavedStories((prev) => prev.filter((story) => story.id !== id));
+
+    if (editingStoryId === id) {
+      setEditingStoryId(null);
+      setEditingStory(null);
+      setBuilderState(INITIAL_BUILDER_STATE);
+      setStoryText("");
+    }
+
+    alert("Story deleted successfully!");
+  } catch (error) {
+    console.error("Failed to delete story:", error);
+    alert("Something went wrong while deleting the story.");
   }
+}
 
   function handleReadAloud() {
     const text = storyText.trim();
@@ -354,17 +380,20 @@ function Home() {
           builderState={builderState}
           storyText={storyText}
           onFieldChange={handleFieldChange}
+          onStoryTextChange={handleStoryTextChange}
           onGenerate={handleGenerateStory}
           onSaveStory={handleSaveStory}
           onReadAloud={handleReadAloud}
           onStopReadAloud={handleStopReadAloud}
           isGenerating={isGenerating}
+          isEditing={!!editingStoryId}
+
         />
       </div>
 
       <Library
         stories={savedStories}
-        onViewStory={handleLoadStory}
+        onViewStory={handleViewStory}
         onEditStory={handleEditStory}
         onDeleteStory={handleDeleteStory}
       />

@@ -22,7 +22,9 @@ function Library({ stories, onViewStory, onEditStory, onDeleteStory }) {
               </div>
 
               <div className="stories-table__date">
-                {story.createdAt || "—"}
+                {story.createdAt
+                  ? new Date(story.createdAt).toLocaleDateString()
+                  : "—"}
               </div>
 
               <div className="stories-table__actions">
@@ -37,7 +39,7 @@ function Library({ stories, onViewStory, onEditStory, onDeleteStory }) {
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  onClick={() => onEditStory(story.id)}
+                  onClick={() => onEditStory(story)}
                 >
                   Edit
                 </button>
