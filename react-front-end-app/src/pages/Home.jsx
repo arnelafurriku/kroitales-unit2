@@ -170,7 +170,6 @@ function Home() {
   const [savedStories, setSavedStories] = useState([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [editingStoryId, setEditingStoryId] = useState(null);
-  const [editingStory, setEditingStory] = useState(null);
 
   useEffect(() => {
     loadStories();
@@ -183,6 +182,12 @@ function Home() {
     } catch (error) {
       console.error("Failed to load stories:", error);
     }
+  }
+
+  function resetBuilder() {
+    setBuilderState(INITIAL_BUILDER_STATE);
+    setStoryText("");
+    setEditingStoryId(null);
   }
 
   function handleFieldChange(field, value) {
@@ -218,76 +223,92 @@ function Home() {
   }
 
   async function handleSaveStory() {
-  try {
-    const characterName = builderState.character.trim();
-    const sidekickName = builderState.sidekick.trim();
-    const settingName = builderState.setting.trim();
-    const actionName = builderState.action.trim();
-    const notesTags = builderState.notes.trim();
-    const storyTitle = builderState.title.trim() || "Untitled story";
+    try {
+      const characterName = builderState.character.trim();
+      const sidekickName = builderState.sidekick.trim();
+      const settingName = builderState.setting.trim();
+      const actionName = builderState.action.trim();
+      const notesTags = builderState.notes.trim();
+      const storyTitle = builderState.title.trim() || "Untitled story";
 
-    if (!characterName || !sidekickName || !settingName || !actionName) {
-      alert(
-        "Please enter a character, sidekick, setting, and action before saving."
-      );
-      return;
-    }
-
-    let text = storyText.trim();
-
-    if (!text) {
-      const generated = buildStory(builderState);
-
-      if (!generated) {
-        alert("Please generate a story before saving.");
+      if (!characterName || !sidekickName || !settingName || !actionName) {
+        alert(
+          "Please enter a character, sidekick, setting, and action before saving."
+        );
         return;
       }
 
-      text = generated;
-      setStoryText(generated);
+      let text = storyText.trim();
+
+      if (!text) {
+        const generated = buildStory(builderState);
+
+        if (!generated) {
+          alert("Please generate a story before saving.");
+          return;
+        }
+
+        text = generated;
+        setStoryText(generated);
+      }
+
+      const storyBeingEdited = savedStories.find(
+        (story) => story.id === editingStoryId
+      );
+
+      if (editingStoryId && storyBeingEdited) {
+        await updateCharacter(storyBeingEdited.characterId, {
+          name: characterName,
+        });
+        await updateSidekick(storyBeingEdited.sidekickId, {
+          name: sidekickName,
+        });
+        await updateSetting(storyBeingEdited.settingId, {
+          name: settingName,
+        });
+        await updateAction(storyBeingEdited.actionId, {
+          name: actionName,
+        });
+
+        const storyPayload = {
+          title: storyTitle,
+          content: text,
+          notesTags,
+          characterId: storyBeingEdited.characterId,
+          sidekickId: storyBeingEdited.sidekickId,
+          settingId: storyBeingEdited.settingId,
+          actionId: storyBeingEdited.actionId,
+        };
+
+        await updateStory(editingStoryId, storyPayload);
+        alert("Story updated successfully!");
+      } else {
+        const savedCharacter = await createCharacter({ name: characterName });
+        const savedSidekick = await createSidekick({ name: sidekickName });
+        const savedSetting = await createSetting({ name: settingName });
+        const savedAction = await createAction({ name: actionName });
+
+        const storyPayload = {
+          title: storyTitle,
+          content: text,
+          notesTags,
+          characterId: savedCharacter.id,
+          sidekickId: savedSidekick.id,
+          settingId: savedSetting.id,
+          actionId: savedAction.id,
+        };
+
+        await createStory(storyPayload);
+        alert("Story saved successfully!");
+      }
+
+      await loadStories();
+      resetBuilder();
+    } catch (error) {
+      console.error("Failed to save story:", error);
+      alert(`Something went wrong while saving the story: ${error.message}`);
     }
-
-    if (editingStoryId && editingStory) {
-  console.log("UPDATING character:", editingStory.characterId, characterName);
-  console.log("UPDATING sidekick:", editingStory.sidekickId, sidekickName);
-  console.log("UPDATING setting:", editingStory.settingId, settingName);
-  console.log("UPDATING action:", editingStory.actionId, actionName);
-
-  await updateCharacter(editingStory.characterId, { name: characterName });
-  await updateSidekick(editingStory.sidekickId, { name: sidekickName });
-  await updateSetting(editingStory.settingId, { name: settingName });
-  await updateAction(editingStory.actionId, { name: actionName });
-
-  const storyPayload = {
-    title: storyTitle,
-    content: text,
-    notesTags,
-    characterId: editingStory.characterId,
-    sidekickId: editingStory.sidekickId,
-    settingId: editingStory.settingId,
-    actionId: editingStory.actionId,
-  };
-
-  const updatedStory = await updateStory(editingStoryId, storyPayload);
-
-  setSavedStories((prev) =>
-    prev.map((story) =>
-      story.id === editingStoryId ? mapStoryFromApi(updatedStory) : story
-    )
-  );
-
-  alert("Story updated successfully!");
-}
-
-    setEditingStoryId(null);
-    setEditingStory(null);
-    setBuilderState(INITIAL_BUILDER_STATE);
-    setStoryText("");
-  } catch (error) {
-    console.error("Failed to save story:", error);
-    alert(`Something went wrong while saving the story: ${error.message}`);
   }
-}
 
   function handleViewStory(id) {
     const story = savedStories.find((s) => s.id === id);
@@ -302,42 +323,38 @@ function Home() {
       notes: story.notes || "",
       title: story.title || "",
     });
+    setEditingStoryId(null);
   }
 
   function handleEditStory(story) {
-  setBuilderState({
-    character: story.character || "",
-    sidekick: story.sidekick || "",
-    setting: story.setting || "",
-    action: story.action || "",
-    notes: story.notes || "",
-    title: story.title || "",
-  });
+    setBuilderState({
+      character: story.character || "",
+      sidekick: story.sidekick || "",
+      setting: story.setting || "",
+      action: story.action || "",
+      notes: story.notes || "",
+      title: story.title || "",
+    });
 
-  setStoryText(story.text || "");
-  setEditingStoryId(story.id);
-  setEditingStory(story);
-}
+    setStoryText(story.text || "");
+    setEditingStoryId(story.id);
+  }
 
   async function handleDeleteStory(id) {
-  try {
-    await deleteStory(id);
+    try {
+      await deleteStory(id);
+      await loadStories();
 
-    setSavedStories((prev) => prev.filter((story) => story.id !== id));
+      if (editingStoryId === id) {
+        resetBuilder();
+      }
 
-    if (editingStoryId === id) {
-      setEditingStoryId(null);
-      setEditingStory(null);
-      setBuilderState(INITIAL_BUILDER_STATE);
-      setStoryText("");
+      alert("Story deleted successfully!");
+    } catch (error) {
+      console.error("Failed to delete story:", error);
+      alert("Something went wrong while deleting the story.");
     }
-
-    alert("Story deleted successfully!");
-  } catch (error) {
-    console.error("Failed to delete story:", error);
-    alert("Something went wrong while deleting the story.");
   }
-}
 
   function handleReadAloud() {
     const text = storyText.trim();
@@ -387,7 +404,6 @@ function Home() {
           onStopReadAloud={handleStopReadAloud}
           isGenerating={isGenerating}
           isEditing={!!editingStoryId}
-
         />
       </div>
 

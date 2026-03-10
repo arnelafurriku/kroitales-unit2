@@ -97,7 +97,7 @@ function Builder({
 
         <div className="btn-center">
           <button className="btn" type="button" onClick={onSaveStory}>
-            {isEditing ? "Save Changes" : "Save Story"}
+            {isEditing ? "Update Story" : "Save Story"}
           </button>
         </div>
       </div>
