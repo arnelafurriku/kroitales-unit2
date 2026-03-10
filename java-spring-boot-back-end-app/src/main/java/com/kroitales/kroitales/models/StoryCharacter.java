@@ -14,9 +14,6 @@ public class StoryCharacter {
     @Column(nullable = false)
     private String name;
 
-    @Column(columnDefinition = "TEXT")
-    private String traits;
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -24,7 +21,6 @@ public class StoryCharacter {
 
     public StoryCharacter(String name, String traits) {
         this.name = name;
-        this.traits = traits;
     }
 
     @PrePersist
@@ -36,9 +32,6 @@ public class StoryCharacter {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-
-    public String getTraits() { return traits; }
-    public void setTraits(String traits) { this.traits = traits; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
 }

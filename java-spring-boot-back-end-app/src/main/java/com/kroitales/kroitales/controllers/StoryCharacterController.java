@@ -19,13 +19,13 @@ public class StoryCharacterController {
         this.characterRepository = characterRepository;
     }
 
-    // ✅ GET all characters
+    // GET all characters
     @GetMapping
     public List<StoryCharacter> getAllCharacters() {
         return characterRepository.findAll();
     }
 
-    // ✅ GET by id
+    // GET by id
     @GetMapping("/{id}")
     public ResponseEntity<StoryCharacter> getById(@PathVariable Long id) {
         return characterRepository.findById(id)
@@ -33,7 +33,7 @@ public class StoryCharacterController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // ✅ POST create character
+    // POST create character
     @PostMapping
     public StoryCharacter createCharacter(@RequestBody @Valid StoryCharacter character) {
         return characterRepository.save(character);

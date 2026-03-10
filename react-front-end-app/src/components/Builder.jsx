@@ -4,11 +4,13 @@ function Builder({
   builderState,
   storyText,
   onFieldChange,
+  onStoryTextChange,
   onGenerate,
   onSaveStory,
   onReadAloud,
   onStopReadAloud,
   isGenerating,
+  isEditing,
 }) {
   const { character, sidekick, setting, action, notes, title } = builderState;
 
@@ -95,7 +97,7 @@ function Builder({
 
         <div className="btn-center">
           <button className="btn" type="button" onClick={onSaveStory}>
-            Save Story
+            {isEditing ? "Save Changes" : "Save Story"}
           </button>
         </div>
       </div>
@@ -104,10 +106,9 @@ function Builder({
         <h3 className="story-title">Your Story</h3>
         <textarea
           className="story-text"
-          readOnly
-          value={
-            storyText || "Your story will appear here after you click Generate."
-          }
+          value={storyText}
+          onChange={(e) => onStoryTextChange(e.target.value)}
+          placeholder="Your story will appear here after you click Generate."
         />
 
         <div className="story-actions">
