@@ -13,26 +13,40 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class SidekickController {
 
-    private final SidekickRepository repository;
+    private final SidekickRepository sidekickRepository;
 
-    public SidekickController(SidekickRepository repository) {
-        this.repository = repository;
+    public SidekickController(SidekickRepository sidekickRepository) {
+        this.sidekickRepository = sidekickRepository;
     }
 
     @GetMapping
-    public List<Sidekick> getAll() {
-        return repository.findAll();
+    public List<Sidekick> getAllSidekicks() {
+        return sidekickRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Sidekick> getById(@PathVariable Long id) {
-        return repository.findById(id)
+    public ResponseEntity<Sidekick> getSidekickById(@PathVariable Long id) {
+        return sidekickRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Sidekick create(@RequestBody @Valid Sidekick sidekick) {
-        return repository.save(sidekick);
+    public Sidekick createSidekick(@RequestBody @Valid Sidekick sidekick) {
+        return sidekickRepository.save(sidekick);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Sidekick> updateSidekick(
+            @PathVariable Long id,
+            @RequestBody @Valid Sidekick updatedSidekick
+    ) {
+        return sidekickRepository.findById(id)
+                .map(existingSidekick -> {
+                    existingSidekick.setName(updatedSidekick.getName());
+                    Sidekick savedSidekick = sidekickRepository.save(existingSidekick);
+                    return ResponseEntity.ok(savedSidekick);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }

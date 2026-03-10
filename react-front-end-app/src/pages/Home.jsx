@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import Builder from "../components/Builder.jsx";
 import Library from "../components/Library.jsx";
-import { createCharacter } from "../api/charactersApi";
-import { createSidekick } from "../api/sidekicksApi";
-import { createSetting } from "../api/settingsApi";
-import { createAction } from "../api/actionsApi";
+import { createCharacter, updateCharacter } from "../api/charactersApi";
+import { createSidekick, updateSidekick } from "../api/sidekicksApi";
+import { createSetting, updateSetting } from "../api/settingsApi";
+import { createAction, updateAction } from "../api/actionsApi";
 import {
   createStory,
   getAllStories,
@@ -248,47 +248,36 @@ function Home() {
     }
 
     if (editingStoryId && editingStory) {
-      const storyPayload = {
-        title: storyTitle,
-        content: text,
-        notesTags,
-        characterId: editingStory.characterId,
-        sidekickId: editingStory.sidekickId,
-        settingId: editingStory.settingId,
-        actionId: editingStory.actionId,
-      };
+  console.log("UPDATING character:", editingStory.characterId, characterName);
+  console.log("UPDATING sidekick:", editingStory.sidekickId, sidekickName);
+  console.log("UPDATING setting:", editingStory.settingId, settingName);
+  console.log("UPDATING action:", editingStory.actionId, actionName);
 
-      const updatedStory = await updateStory(editingStoryId, storyPayload);
+  await updateCharacter(editingStory.characterId, { name: characterName });
+  await updateSidekick(editingStory.sidekickId, { name: sidekickName });
+  await updateSetting(editingStory.settingId, { name: settingName });
+  await updateAction(editingStory.actionId, { name: actionName });
 
-      setSavedStories((prev) =>
-        prev.map((story) =>
-          story.id === editingStoryId ? mapStoryFromApi(updatedStory) : story
-        )
-      );
+  const storyPayload = {
+    title: storyTitle,
+    content: text,
+    notesTags,
+    characterId: editingStory.characterId,
+    sidekickId: editingStory.sidekickId,
+    settingId: editingStory.settingId,
+    actionId: editingStory.actionId,
+  };
 
-      alert("Story updated successfully!");
-    } else {
-      const savedCharacter = await createCharacter({ name: characterName });
-      const savedSidekick = await createSidekick({ name: sidekickName });
-      const savedSetting = await createSetting({ name: settingName });
-      const savedAction = await createAction({ name: actionName });
+  const updatedStory = await updateStory(editingStoryId, storyPayload);
 
-      const storyPayload = {
-        title: storyTitle,
-        content: text,
-        notesTags,
-        characterId: savedCharacter.id,
-        sidekickId: savedSidekick.id,
-        settingId: savedSetting.id,
-        actionId: savedAction.id,
-      };
+  setSavedStories((prev) =>
+    prev.map((story) =>
+      story.id === editingStoryId ? mapStoryFromApi(updatedStory) : story
+    )
+  );
 
-      const newStory = await createStory(storyPayload);
-
-      setSavedStories((prev) => [mapStoryFromApi(newStory), ...prev]);
-
-      alert("Story saved successfully!");
-    }
+  alert("Story updated successfully!");
+}
 
     setEditingStoryId(null);
     setEditingStory(null);
