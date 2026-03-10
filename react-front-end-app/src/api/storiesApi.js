@@ -1,5 +1,6 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 
+// GET all stories
 export async function getAllStories() {
   const response = await fetch(`${BASE_URL}/api/stories`);
 
@@ -10,6 +11,7 @@ export async function getAllStories() {
   return response.json();
 }
 
+// CREATE story
 export async function createStory(story) {
   const response = await fetch(`${BASE_URL}/api/stories`, {
     method: "POST",
@@ -26,6 +28,7 @@ export async function createStory(story) {
   return response.json();
 }
 
+// UPDATE story
 export async function updateStory(id, story) {
   const response = await fetch(`${BASE_URL}/api/stories/${id}`, {
     method: "PUT",
@@ -36,13 +39,13 @@ export async function updateStory(id, story) {
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Failed to update story: ${response.status} ${errorText}`);
+    throw new Error(`Failed to update story: ${response.status}`);
   }
 
   return response.json();
 }
 
+// DELETE story
 export async function deleteStory(id) {
   const response = await fetch(`${BASE_URL}/api/stories/${id}`, {
     method: "DELETE",
@@ -51,6 +54,4 @@ export async function deleteStory(id) {
   if (!response.ok) {
     throw new Error(`Failed to delete story: ${response.status}`);
   }
-
-  return true;
 }
