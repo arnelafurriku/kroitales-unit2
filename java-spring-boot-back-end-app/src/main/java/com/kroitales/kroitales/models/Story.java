@@ -1,9 +1,25 @@
 package com.kroitales.kroitales.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "stories")
 public class Story {
 
@@ -41,54 +57,4 @@ public class Story {
     @ManyToOne(optional = false)
     @JoinColumn(name = "action_id", nullable = false)
     private Action action;
-
-    public Story() {}
-
-    public Story(String title, String content, String notesTags,
-                 StoryCharacter character, Sidekick sidekick, Setting setting, Action action) {
-        this.title = title;
-        this.content = content;
-        this.notesTags = notesTags;
-        this.character = character;
-        this.sidekick = sidekick;
-        this.setting = setting;
-        this.action = action;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = this.createdAt;
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public Long getId() { return id; }
-
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
-
-    public String getNotesTags() { return notesTags; }
-    public void setNotesTags(String notesTags) { this.notesTags = notesTags; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-
-    public StoryCharacter getCharacter() { return character; }
-    public void setCharacter(StoryCharacter character) { this.character = character; }
-
-    public Sidekick getSidekick() { return sidekick; }
-    public void setSidekick(Sidekick sidekick) { this.sidekick = sidekick; }
-
-    public Setting getSetting() { return setting; }
-    public void setSetting(Setting setting) { this.setting = setting; }
-
-    public Action getAction() { return action; }
-    public void setAction(Action action) { this.action = action; }
 }
