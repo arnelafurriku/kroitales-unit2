@@ -1,72 +1,26 @@
 package com.kroitales.kroitales.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
 public class StoryCreateRequest {
 
+    @NotBlank
     private String title;
-    private String content;
-    private String notesTags;
 
+    private String notes;
+
+    @NotNull
     private Long characterId;
+
+    @NotNull
     private Long sidekickId;
+
+    @NotNull
     private Long settingId;
+
+    @NotNull
     private Long actionId;
-
-    public StoryCreateRequest() {
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getNotesTags() {
-        return notesTags;
-    }
-
-    public void setNotesTags(String notesTags) {
-        this.notesTags = notesTags;
-    }
-
-    public Long getCharacterId() {
-        return characterId;
-    }
-
-    public void setCharacterId(Long characterId) {
-        this.characterId = characterId;
-    }
-
-    public Long getSidekickId() {
-        return sidekickId;
-    }
-
-    public void setSidekickId(Long sidekickId) {
-        this.sidekickId = sidekickId;
-    }
-
-    public Long getSettingId() {
-        return settingId;
-    }
-
-    public void setSettingId(Long settingId) {
-        this.settingId = settingId;
-    }
-
-    public Long getActionId() {
-        return actionId;
-    }
-
-    public void setActionId(Long actionId) {
-        this.actionId = actionId;
-    }
 }

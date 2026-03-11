@@ -1,7 +1,8 @@
-package com.kroitales.kroitales.services;
+package com.kroitales.kroitales.services.impl;
 
 import com.kroitales.kroitales.data.SidekickRepository;
 import com.kroitales.kroitales.models.Sidekick;
+import com.kroitales.kroitales.services.SidekickService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 

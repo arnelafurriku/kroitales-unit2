@@ -1,7 +1,8 @@
-package com.kroitales.kroitales.services;
+package com.kroitales.kroitales.services.impl;
 
 import com.kroitales.kroitales.data.SettingRepository;
 import com.kroitales.kroitales.models.Setting;
+import com.kroitales.kroitales.services.SettingService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
