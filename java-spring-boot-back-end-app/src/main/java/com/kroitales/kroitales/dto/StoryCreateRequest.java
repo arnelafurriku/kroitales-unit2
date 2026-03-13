@@ -10,6 +10,8 @@ public class StoryCreateRequest {
     @NotBlank
     private String title;
 
+    private String content;
+
     private String notes;
 
     @NotNull
