@@ -1,14 +1,38 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 
+async function handleResponse(response, defaultMessage) {
+  if (response.ok) {
+    if (response.status === 204) return null;
+    return response.json();
+  }
+
+  let errorMessage = `${defaultMessage}: ${response.status}`;
+
+  try {
+    const errorData = await response.json();
+    errorMessage =
+      errorData.message ||
+      errorData.error ||
+      JSON.stringify(errorData) ||
+      errorMessage;
+  } catch {
+    try {
+      const errorText = await response.text();
+      if (errorText) {
+        errorMessage = errorText;
+      }
+    } catch {
+      // keep default message
+    }
+  }
+
+  throw new Error(errorMessage);
+}
+
 // GET all stories
 export async function getAllStories() {
   const response = await fetch(`${BASE_URL}/api/stories`);
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch stories: ${response.status}`);
-  }
-
-  return response.json();
+  return handleResponse(response, "Failed to fetch stories");
 }
 
 // CREATE story
@@ -21,11 +45,7 @@ export async function createStory(story) {
     body: JSON.stringify(story),
   });
 
-  if (!response.ok) {
-    throw new Error(`Failed to create story: ${response.status}`);
-  }
-
-  return response.json();
+  return handleResponse(response, "Failed to create story");
 }
 
 // UPDATE story
@@ -38,11 +58,7 @@ export async function updateStory(id, story) {
     body: JSON.stringify(story),
   });
 
-  if (!response.ok) {
-    throw new Error(`Failed to update story: ${response.status}`);
-  }
-
-  return response.json();
+  return handleResponse(response, "Failed to update story");
 }
 
 // DELETE story
@@ -51,7 +67,5 @@ export async function deleteStory(id) {
     method: "DELETE",
   });
 
-  if (!response.ok) {
-    throw new Error(`Failed to delete story: ${response.status}`);
-  }
+  return handleResponse(response, "Failed to delete story");
 }

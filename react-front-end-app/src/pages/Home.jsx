@@ -151,17 +151,111 @@ function mapStoryFromApi(story) {
     id: story.id,
     title: story.title || "Untitled story",
     text: story.content || "",
-    notes: story.notesTags || "",
-    character: story.character?.name || "",
-    sidekick: story.sidekick?.name || "",
-    setting: story.setting?.name || "",
-    action: story.action?.name || "",
-    characterId: story.character?.id || null,
-    sidekickId: story.sidekick?.id || null,
-    settingId: story.setting?.id || null,
-    actionId: story.action?.id || null,
+    notes: story.notes || "",
+    character: story.characterName || "",
+    sidekick: story.sidekickName || "",
+    setting: story.settingName || "",
+    action: story.actionName || "",
+    characterId: story.characterId || null,
+    sidekickId: story.sidekickId || null,
+    settingId: story.settingId || null,
+    actionId: story.actionId || null,
     createdAt: story.createdAt || "",
   };
+}
+
+function escapeHtml(text = "") {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function buildPrintableStoryHtml(story) {
+  const title = escapeHtml(story.title || "Untitled story");
+  const content = escapeHtml(story.text || "");
+  const createdAt = story.createdAt
+    ? new Date(story.createdAt).toLocaleDateString()
+    : "—";
+
+  return `
+    <html>
+      <head>
+        <title>${title}</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background: #ffffff;
+            color: #222;
+            margin: 0;
+            padding: 32px;
+            line-height: 1.6;
+          }
+
+          .print-page {
+            max-width: 800px;
+            margin: 0 auto;
+          }
+
+          .print-title {
+            text-align: center;
+            margin-bottom: 8px;
+            font-size: 28px;
+          }
+
+          .print-date {
+            text-align: center;
+            margin-bottom: 24px;
+            color: #666;
+            font-size: 14px;
+          }
+
+          .print-meta {
+            margin-bottom: 24px;
+            padding: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+          }
+
+          .print-meta p {
+            margin: 6px 0;
+          }
+
+          .print-section-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+          }
+
+          .print-story,
+          .print-notes {
+            white-space: pre-wrap;
+          }
+
+          @media print {
+            body {
+              padding: 20px;
+            }
+
+            .print-page {
+              max-width: 100%;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="print-page">
+          <h1 class="print-title">${title}</h1>
+          <div class="print-date">Created: ${createdAt}</div>
+          <div class="print-section">
+            <h2 class="print-section-title">Story</h2>
+            <div class="print-story">${content || "No story content available."}</div>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
 }
 
 function Home() {
@@ -228,7 +322,7 @@ function Home() {
       const sidekickName = builderState.sidekick.trim();
       const settingName = builderState.setting.trim();
       const actionName = builderState.action.trim();
-      const notesTags = builderState.notes.trim();
+      const notes = builderState.notes.trim();
       const storyTitle = builderState.title.trim() || "Untitled story";
 
       if (!characterName || !sidekickName || !settingName || !actionName) {
@@ -260,12 +354,15 @@ function Home() {
         await updateCharacter(storyBeingEdited.characterId, {
           name: characterName,
         });
+
         await updateSidekick(storyBeingEdited.sidekickId, {
           name: sidekickName,
         });
+
         await updateSetting(storyBeingEdited.settingId, {
           name: settingName,
         });
+
         await updateAction(storyBeingEdited.actionId, {
           name: actionName,
         });
@@ -273,7 +370,7 @@ function Home() {
         const storyPayload = {
           title: storyTitle,
           content: text,
-          notesTags,
+          notes: notes,
           characterId: storyBeingEdited.characterId,
           sidekickId: storyBeingEdited.sidekickId,
           settingId: storyBeingEdited.settingId,
@@ -290,8 +387,8 @@ function Home() {
 
         const storyPayload = {
           title: storyTitle,
+          notes: notes,
           content: text,
-          notesTags,
           characterId: savedCharacter.id,
           sidekickId: savedSidekick.id,
           settingId: savedSetting.id,
@@ -356,6 +453,27 @@ function Home() {
     }
   }
 
+  function handlePrintStory(story) {
+    const printWindow = window.open("", "_blank", "width=900,height=700");
+
+    if (!printWindow) {
+      alert("Please allow pop-ups to print your story.");
+      return;
+    }
+
+    const printableHtml = buildPrintableStoryHtml(story);
+
+    printWindow.document.open();
+    printWindow.document.write(printableHtml);
+    printWindow.document.close();
+
+    printWindow.onload = () => {
+      printWindow.focus();
+      printWindow.print();
+      printWindow.onafterprint = () => printWindow.close();
+    };
+  }
+
   function handleReadAloud() {
     const text = storyText.trim();
 
@@ -412,6 +530,7 @@ function Home() {
         onViewStory={handleViewStory}
         onEditStory={handleEditStory}
         onDeleteStory={handleDeleteStory}
+        onPrintStory={handlePrintStory}
       />
     </section>
   );
