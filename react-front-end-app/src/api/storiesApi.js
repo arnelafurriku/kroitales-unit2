@@ -29,6 +29,18 @@ async function handleResponse(response, defaultMessage) {
   throw new Error(errorMessage);
 }
 
+export async function generateStory(story) {
+  const response = await fetch(`${BASE_URL}/api/stories/generate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(story),
+  });
+
+  return handleResponse(response, "Failed to generate story");
+}
+
 // GET all stories
 export async function getAllStories() {
   const response = await fetch(`${BASE_URL}/api/stories`);
