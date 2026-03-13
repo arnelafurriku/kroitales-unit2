@@ -1,4 +1,10 @@
-function Library({ stories, onViewStory, onEditStory, onDeleteStory }) {
+function Library({
+  stories,
+  onViewStory,
+  onEditStory,
+  onDeleteStory,
+  onPrintStory,
+}) {
   const hasStories = stories && stories.length > 0;
 
   return (
@@ -42,6 +48,14 @@ function Library({ stories, onViewStory, onEditStory, onDeleteStory }) {
                   onClick={() => onEditStory(story)}
                 >
                   Edit
+                </button>
+
+                <button
+                  type="button"
+                  className="btn btn-print"
+                  onClick={() => onPrintStory(story)}
+                >
+                  Print as PDF
                 </button>
 
                 <button
