@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-03-11T18:08:43-0500",
+    date = "2026-03-12T22:27:24-0500",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.18 (Microsoft)"
 )
 @Component
@@ -26,7 +26,9 @@ public class StoryMapperImpl implements StoryMapper {
 
         Story story = new Story();
 
+        story.setNotes( request.getNotes() );
         story.setTitle( request.getTitle() );
+        story.setContent( request.getContent() );
 
         return story;
     }
@@ -37,7 +39,9 @@ public class StoryMapperImpl implements StoryMapper {
             return;
         }
 
+        story.setNotes( request.getNotes() );
         story.setTitle( request.getTitle() );
+        story.setContent( request.getContent() );
     }
 
     @Override
@@ -48,6 +52,7 @@ public class StoryMapperImpl implements StoryMapper {
 
         StoryResponse storyResponse = new StoryResponse();
 
+        storyResponse.setNotes( story.getNotes() );
         storyResponse.setCharacterId( storyCharacterId( story ) );
         storyResponse.setCharacterName( storyCharacterName( story ) );
         storyResponse.setSidekickId( storySidekickId( story ) );
@@ -59,7 +64,7 @@ public class StoryMapperImpl implements StoryMapper {
         storyResponse.setId( story.getId() );
         storyResponse.setTitle( story.getTitle() );
         storyResponse.setContent( story.getContent() );
-        storyResponse.setNotesTags( story.getNotesTags() );
+        storyResponse.setCreatedAt( story.getCreatedAt() );
 
         return storyResponse;
     }

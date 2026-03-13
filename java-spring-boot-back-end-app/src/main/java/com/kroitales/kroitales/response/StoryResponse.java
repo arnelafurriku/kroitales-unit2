@@ -2,12 +2,14 @@ package com.kroitales.kroitales.response;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class StoryResponse {
     private Long id;
     private String title;
     private String content;
-    private String notesTags;
+    private String notes;
 
     private Long characterId;
     private String characterName;
@@ -20,4 +22,6 @@ public class StoryResponse {
 
     private Long actionId;
     private String actionName;
+
+    private LocalDateTime createdAt;
 }
